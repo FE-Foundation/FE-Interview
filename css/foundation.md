@@ -1,5 +1,6 @@
 ## CSS选择器
 
+####基本选择器
 1. **``*``通用选择器**：选择所有元素，**不参与计算优先级**，兼容性IE6+
 2. **``#X`` id选择器**：选择id值为X的元素，兼容性：IE6+
 3. **``.X`` 类选择器**： 选择class包含X的元素，兼容性：IE6+
@@ -9,7 +10,17 @@
 7. **``X + Y``直接兄弟选择器**：在**X之后第一个兄弟节点**(紧邻)中选择满足Y选择器的元素，兼容性： IE7+
 8. **``X ~ Y``兄弟**： 选择**X之后所有兄弟节点**中满足Y选择器的元素，兼容性： IE7+
 
----
+
+####属性选择器：
+1. **``ele[attr]``**：选择所有设置了attr属性的元素，兼容性：IE7+
+2. **``ele[attr="value"]``**：选择属性值刚好为value的元素，兼容性：IE7+
+3. **``ele[attr~="value"]``**：选择属性值为空白符分隔，其中一个的值刚好是value的元素，兼容性：IE7+
+4. **``ele[attr|="value"]``**：选择属性值刚好为value或者value开头的元素，兼容性：IE7+
+5. **``ele[attr^="value"]``**：选择属性值以value开头的元素，兼容性：IE7+
+6. **``ele[attr$="value"]``**：选择属性值以value结尾的元素，兼容性：IE7+
+7. **``ele[attr*="value"]``**：选择属性值中包含value的元素，兼容性：IE7+
+8. **``ele[:checked]``**：选择单选框，复选框，下拉框中选中状态下的元素，兼容性：IE9+
+
 ####伪类选择器：
 链接伪类：
 **a:link，a:visited，a:focus，a:hover，a:active 链接状态**： 选择特定状态的链接元素，顺序``LoVe HAte``，兼容性: IE4+
@@ -21,27 +32,26 @@
 * **``X:first-child``**：伪类，选择满足X选择器的元素，且这个元素是其父节点的第一个子元素。兼容性IE7+
 * **``X:last-child``**：伪类，选择满足X选择器的元素，且这个元素是其父节点的最后一个子元素。兼容性IE9+
 * **``X:only-child``**：伪类，选择满足X选择器的元素，且这个元素是其父元素的唯一子元素。兼容性IE9+
+* **``li:nth-child(an + b)``**：伪类，选择前面有``an + b - 1``个兄弟节点的元素，其中n&gt;= 0，可为odd或even， 兼容性IE9+
 
-**``li:nth-child(an + b)``**：伪类，选择前面有``an + b - 1``个兄弟节点的元素，其中n&gt;= 0， 兼容性IE9+
+``:only-of-type``：IE9+
+``:first-of-type``： IE9+
+``:last-of-type``： IE9+
+``:nth-of-type(even)``： IE9+
+``:nth-last-of-type(2n)``： IE9+
+> NOTE：element:nth-of-type(n) 指父元素下第 n 个 element 元素，element:nth-child(n) 指父元素下第 n 个元素且元素为 element，若不是，选择失败。具体细节请在使用时查找文档。
 
+其他：
+``:enabled``、``:disabled``、``checked``
 **``:not(selector)``**：选择不符合selector的元素。**不参与计算优先级**，兼容性：IE9+
 
 ####伪元素选择器：
 之前是``:``，CSS3中``::``表示伪元素。
 
-**``::first-letter``**：伪元素，选择块元素第一行的第一个字母，兼容性IE5.5+
-**``::first-line``**：伪元素，选择块元素的第一行，兼容性IE5.5+
+**``::first-letter``**：伪元素，选择块元素第一行的第一个字母，兼容性IE6+
+**``::first-line``**：伪元素，选择块元素的第一行，兼容性IE6+
 **``X:after, X::after``**：在特定元素前面或后面添加特殊内容``content``，并设置样式。兼容性:after为IE8+，::after为IE9+
-
-####属性选择器：
-1. **``ele[attr]``**：选择所有设置了attr属性的元素，兼容性IE7+
-2. **``ele[attr="value"]``**：选择属性值刚好为value的元素
-3. **``ele[attr~="value"]``**：选择属性值为空白符分隔，其中一个的值刚好是value的元素
-4. **``ele[attr|="value"]``**：选择属性值刚好为value或者value开头的元素
-5. **``ele[attr^="value"]``**：选择属性值以value开头的元素
-6. **``ele[attr$="value"]``**：选择属性值以value结尾的元素
-7. **``ele[attr*="value"]``**：选择属性值中包含value的元素
-8. **``ele[:checked]``**：选择单选框，复选框，下拉框中选中状态下的元素，兼容性：IE9+
+**``::selection``：被用户选中的内容（鼠标选择高亮属性）IE9+ Firefox需用 -moz 前缀
 
 
 ####特殊性
@@ -52,6 +62,7 @@
 * 选择器中有一个``class类属性值``、``属性选择``或``伪类``，加``0,0,1,0``；
 * 选择器中有一个元素名或伪元素，加``0,0,0,1``；
 * 结合符和通配选择器对特殊性没有贡献。
+* 最高级是：行内样式
 
 ```css
 html>body table tr[id="totals"] td ul>li {} /*0,0,1,7*/
@@ -177,6 +188,9 @@ html>body table tr[id="totals"] td ul>li {} /*0,0,1,7*/
 - `line-height`
 - `color`
 - `visibility`
+- `list-style`
+
+非继承属性：``background``、``border``、``position``
 
 ### `link`与`@import`的区别
 
