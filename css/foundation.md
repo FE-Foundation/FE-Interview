@@ -34,11 +34,11 @@
 * **``X:only-child``**：伪类，选择满足X选择器的元素，且这个元素是其父元素的唯一子元素。兼容性IE9+
 * **``li:nth-child(an + b)``**：伪类，选择前面有``an + b - 1``个兄弟节点的元素，其中n&gt;= 0，可为odd或even， 兼容性IE9+
 
-``:only-of-type``：IE9+
-``:first-of-type``： IE9+
-``:last-of-type``： IE9+
-``:nth-of-type(even)``： IE9+
-``:nth-last-of-type(2n)``： IE9+
+``:only-of-type``：IE9+、
+``:first-of-type``： IE9+、
+``:last-of-type``： IE9+、
+``:nth-of-type(even)``： IE9+、
+``:nth-last-of-type(2n)``： IE9+、
 > NOTE：element:nth-of-type(n) 指父元素下第 n 个 element 元素，element:nth-child(n) 指父元素下第 n 个元素且元素为 element，若不是，选择失败。具体细节请在使用时查找文档。
 
 其他：
@@ -67,6 +67,37 @@
 ```css
 html>body table tr[id="totals"] td ul>li {} /*0,0,1,7*/
 ```
+
+##文本
+``vertical-align``的参照物为``line-height``。
+
+缩进两个字可使用 ``text-indent: 2em``。
+
+####line-height
+> NOTE：当line-height为 number 类型时，子类直接继承其数值（不计算直接继承）。而当为 percentage 类型时，子类则会先计算再显示（先计算后继承）。
+
+####font 属性
+
+``font``属性，它是涵盖所有其他字体属性的一个简写属性。
+例：
+```
+h1 { 
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+    font-size: 30px;
+    font-weight: 900;
+    font-style: italic;
+    font-variant: small-caps;
+}
+```
+可以简写为：
+```
+h1 {
+    font: italic 900 small-caps 30px Verdana,Helvetica,Arial,sans-serif;
+}
+```
+前三个值是：``font-style``、``font-weight``、``font-variant``，这三个属性值可以按任何顺序来写，如果其中某个属性的值为``normal``，则可忽略。
+
+``font-size``和``font-family``不仅要以此作为声明中的最后两个值，而且``font``声明中必须有这两个值。
 
 
 ##"display"属性
@@ -202,28 +233,7 @@ html>body table tr[id="totals"] td ul>li {} /*0,0,1,7*/
 6. 总体来说：**[link优于@import](http://www.stevesouders.com/blog/2009/04/09/dont-use-import/)**  
 
 
-###font 属性
 
-``font``属性，它是涵盖所有其他字体属性的一个简写属性。
-例：
-```
-h1 { 
-	font-family: Verdana, Helvetica, Arial, sans-serif;
-	font-size: 30px;
-	font-weight: 900;
-	font-style: italic;
-	font-variant: small-caps;
-}
-```
-可以简写为：
-```
-h1 {
-	font: italic 900 small-caps 30px Verdana,Helvetica,Arial,sans-serif;
-}
-```
-前三个值是：``font-style``、``font-weight``、``font-variant``，这三个属性值可以按任何顺序来写，如果其中某个属性的值为``normal``，则可忽略。
-
-``font-size``和``font-family``不仅要以此作为声明中的最后两个值，而且``font``声明中必须有这两个值。
 
 ### 如何水平居中一个元素
 - 如果需要居中的元素为**常规流中inline元素**，为父元素设置`text-align: center;`即可实现
