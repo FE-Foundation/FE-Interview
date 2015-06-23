@@ -73,6 +73,13 @@ html>body table tr[id="totals"] td ul>li {} /*0,0,1,7*/
 
 缩进两个字可使用 ``text-indent: 2em``。
 
+省略字符常用配合：
+```
+text-overflow: ellipsis;
+overflow: hidden; /* 溢出截取 */
+white-space: nowrap; /* 禁止换行 */
+```
+
 ####line-height
 > NOTE：当line-height为 number 类型时，子类直接继承其数值（不计算直接继承）。而当为 percentage 类型时，子类则会先计算再显示（先计算后继承）。
 
