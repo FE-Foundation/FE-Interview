@@ -83,6 +83,22 @@ white-space: nowrap; /* 禁止换行 */
 ####line-height
 > NOTE：当line-height为 number 类型时，子类直接继承其数值（不计算直接继承）。而当为 percentage 类型时，子类则会先计算再显示（先计算后继承）。
 
+例如：``h1``的``line-height``为``18px``。
+```
+<section>
+    <h1>这是一个很长的标题啊</h1>
+    <p>这是正文</p>
+</section>
+
+section {
+    font-size: 12px;
+    line-height: 1.5em;
+}
+h1 {
+    font-size: 30px;
+}
+```
+
 ####font 属性
 
 ``font``属性，它是涵盖所有其他字体属性的一个简写属性。
