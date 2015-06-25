@@ -6,7 +6,7 @@
 * 控制子元素显示顺序
 * 控制子元素是否折行
 
-![](/axis.png)
+![](axis.png)
 
 ###创建 flex container
 ```
