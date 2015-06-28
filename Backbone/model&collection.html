@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="lib/jquery.js"></script>
+	<script src="lib/underscore.js"></script>
+	<script src="lib/backbone.js"></script>
+</head>
+<body>
+	<script>
+	var Fruit = Backbone.Model.extend({
+		// 默认值
+		defaults: {
+			type: 'apple',
+			condition: 'perfect'
+		},
+		// 自定义属性
+		description: function () {
+			return this.get('color') + ',' + this.get('type');
+		},
+		// 初始化函数
+		initialize: function () {
+			/*事件add、change等等通过on方法绑定*/
+			this.on('change:condition', function () {
+				console.log('The condition of this fruit has changed.');
+			}),
+			// 校验触发
+			this.on('invalid', function (model, err) {
+				console.log(err);
+			})
+		},
+		/*调用save()方法或带有{validate:true}参数的set()方法时，触发校验*/
+		validate: function (options) {
+			if (options.color == undefined) {
+				return "Rember to set color";
+			}
+		}
+	});
+	var apple = new Fruit({
+		color: 'red'
+	});
+	// 事件也可以后添加
+	apple.on('change', function () {
+		console.log('Fruit change.');
+	});
+
+	console.log(apple.get('color'));  // red
+	apple.set('condition', 'moldy');  /* The condition of this fruit has changed. 
+										Fruit change. */ 
+	apple.unset('color', {validate: true}); // Rember to set color
+	
+
+
+	// 创建基于模型的集合
+	var Fruits = Backbone.Collection.extend({
+		model: Fruit,
+
+		initialize: function () {
+			this.on('add', function (model) {
+				console.log(model.get('type')+' added');
+			});
+			this.on('remove', function (model) {
+				console.log(model.get('type') + ' removed');
+			});
+		}
+	});
+
+	var a = new Fruit({type: 'apple', color: 'red'}),
+		b = new Fruit({type: 'banana', color: 'yellow'});
+	// 创建新的集合实例
+	var fruitbowl = new Fruits([a, b]);
+	fruitbowl.add({type: 'apple', color: 'green'}); // apple added
+	fruitbowl.remove(b);  // banana removed
+
+	console.log(fruitbowl.length); // 2
+
+	fruitbowl.once('event', function () {
+		console.log('only one occur');
+	});
+	fruitbowl.trigger('event');
+
+	// 不带参数会清空集合
+	fruitbowl.reset([
+		{"type": "banana", "color": "yellow", "quantity": 5},
+		{"type": "apple", "color": "red", "quantity": 4},
+		{"type": "orange", "color": "orange", "quantity": 3},
+		{"type": "apple", "color": "yellow", "quantity": 1}
+	]);
+	console.log(fruitbowl.length); // 4
+
+	//操作集合：取出条目
+	var thirdFruit = fruitbowl.at(2);
+	var firstFruit = fruitbowl.first();
+	var lastFruit = fruitbowl.last();
+	console.log(lastFruit.get('quantity'));
+
+	var apples = fruitbowl.where({type: 'apple'});
+
+	//操作集合：集合排序
+	fruitbowl.comparator = function (fruit) {
+		return fruit.get('quantity');
+	}
+	//倒序 5...1
+	fruitbowl.comparator = function (fruit1, fruit2) {
+		var qua1 = fruit1.get('quantity'),
+			qua2 = fruit2.get('quantity');
+		if (qua1 > qua2) return -1;
+		if (qua1 < qua2) return 1;
+		return 0;
+	};
+
+	// 触发排序
+	fruitbowl.sort();
+
+	</script>
+</body>
+</html>
