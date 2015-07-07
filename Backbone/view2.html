@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="lib/underscore.js"></script>
+	<script src="lib/jquery.js"></script>
+	<script src="lib/backbone.js"></script>
+</head>
+<body>
+	<div id="band-wrapper"></div>
+
+	<script>
+	(function ($) {
+		var Band = {};
+		Band.Member = Backbone.Model.extend({});
+		Band.Members = Backbone.Collection.extend({
+			model: Band.Member
+		});
+
+		var band = new Band.Members([
+			{ name: 'John' },
+			{ name: 'Paul' },
+			{ name: 'George' },
+			{ name: 'Ringo' }
+		]);	
+
+		Band.Member.View = Backbone.View.extend({
+			tagName: 'li',
+			render: function () {
+				// 名称添加到列表项中
+				this.$el.text(this.model.get('name'));
+				// 将新的列表项追加到父视图的列表中
+				this.parentView.$el.append( this.$el );
+
+				return this;
+			}
+		});
+
+		Band.Members.View = Backbone.View.extend({
+			el: '#band-wrapper',
+
+			initialize: function () {
+				// 跟渲染函数分享 "this" 上下文，这里不用，下面事件需加一个参数this
+				_.bindAll(this, 'render');
+
+				// 为集合添加各种事件
+				this.collection.on('change', this.render);
+				this.collection.on('add', this.render);
+				this.collection.on('remove', this.render);
+
+				this.render();
+			},
+
+			render: function () {
+				// 清空视图元素
+				this.$el.empty();
+
+				// 进入循环前保留 this
+				var thisView = this;
+
+				this.collection.each(function (bandMember) {
+					var bandMemberView = new Band.Member.View({
+						model: bandMember
+					});
+
+					bandMemberView.parentView = thisView;
+					bandMemberView.render();
+				});
+				return this;
+			}
+		});
+
+		var bandView = new Band.Members.View({
+			collection: band
+		});
+
+		setTimeout(function () {
+			band.add({ name:"OriginalSoul" });
+		},3000);
+	})(jQuery)
+	</script>
+</body>
+</html>

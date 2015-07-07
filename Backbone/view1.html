@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="lib/underscore.js"></script>
+	<script src="lib/jquery.js"></script>
+	<script src="lib/backbone.js"></script>
+</head>
+<body>
+	<p id="element"></p>
+	<div id="user"></div>
+
+	<script>
+	var MyView = Backbone.View.extend({
+		// 在DOM中找到与这个CSS选择器相匹配的元素
+		el: '#element',
+
+		initialize: function () {
+			this.render();
+		},
+
+		// 调用render 函数渲染视图
+		render: function () {
+			this.$el.html('Hello World!');
+			// 常见模式
+			return this;
+		}
+	});
+
+	var myView = new MyView();
+	/**
+	* el可以在定义view的时候在属性中声明，
+	* 也可以在实例化view的时候通过参数传递
+	* var myView = new MyView({el: "#element"});
+	*
+	* 除了引用，也可以创建新的视图元素：
+	*   var MyView = Backbone.View.extend({
+	*	    tagName: 'li',
+	*	    className: 'Container list-item',
+	*	    id: 'my-view'
+	*   });
+	*/
+
+
+	// 大多数情况下，视图会被绑定到模型上
+	var User = Backbone.Model.extend({});
+	var user = new User({
+		username: 'evilcige',
+		displayName: 'OriginalSoul',
+		bio: 'Some nerd'
+	});
+	// 创建绑到上面模型上的视图
+	var UserView = Backbone.View.extend({
+		el: '#user',
+		initialize: function () {
+			// 把视图对应模型中的变化绑定到渲染函数上
+			this.model.on('change', this.render, this);
+			this.render();
+		},
+		render: function () {
+			var $card = $('<a href="/users/'+ this.model.get('username') + '">');
+			var $name = $('<h1>'+ this.model.get('displayName') +'</h1>').appendTo($card);
+			var $bio = $('<p>' + this.model.get('bio') + '</p>').appendTo($card);
+
+			this.$el.html($card);
+			return this;
+		}
+	});
+	// 创建视图的新实例，绑定到用户模型上
+	var userView = new UserView({
+		model: user
+	});
+
+	setTimeout(function () {
+		user.set('displayName', '刺鸽');
+	},5000);
+
+
+
+	</script>
+</body>
+</html>
