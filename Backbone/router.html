@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="lib/jquery.js"></script>
+	<script src="lib/underscore.js"></script>
+	<script src="lib/backbone.js"></script>
+</head>
+<body>
+	<a href="#/posts/120">Post 120</a>
+
+	<script>
+	(function ($) {
+		// 设置程序让它响应每个锚点 URL
+		var AppRouter = Backbone.Router.extend({
+			routes: {
+				"posts/:id" : "getPost",
+				"download/*" : "downloadFile",
+				":route/:action" : "loadView"
+			},
+			getPost: function (id) {
+				console.log(id); // 120
+			},
+			downloadFile: function (path) {
+				console.log(path);   // "download/user/images/hey.gif"
+			},
+			loadView: function (route, action) {
+				console.log(route +"_"+ action);   //dashboard_graph 
+			}
+		});
+
+		var app_router = new AppRouter();
+
+		// 启动路由控制
+		Backbone.history.start();
+
+		window.location.hash = "download/user/images/hey.gif";
+		// 触发路由，防止新路由加入到历史记录中 replace: true, trigger如果为false则只改变url
+		Backbone.history.navigate('dashboard/graph', {trigger:true, replace:true});
+	})(jQuery);
+	</script>
+</body>
+</html>
