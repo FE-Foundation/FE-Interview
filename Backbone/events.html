@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="lib/jquery.js"></script>
+	<script src="lib/underscore.js"></script>
+	<script src="lib/backbone.js"></script>
+</head>
+<body>
+	<script>
+	(function ($) {
+		// Backbone.Events 可以让任何对象具有绑定和触发事件的能力
+		// 可以很容易的将 Backbone.Events 混入到任意对象上
+		// 页面有很多事件，冒号对事件进行命名空间设定
+		var ourObject = {};
+
+		_.extend(ourObject, Backbone.Events);
+
+		// 可以为回调函数传入多个参数
+		function dancing (msg) {
+			console.log('We triggered '+msg);
+		}
+
+		ourObject.on('dance:tap', dancing);
+		ourObject.on('dance:break', dancing);
+
+		ourObject.trigger('dance:tap', 'tap dancing. Yeah!');
+		ourObject.trigger('dance:break', 'break dancing. Yeah!');
+
+		// 解除事件，第二个参数是特定回调函数
+		ourObject.off('dance:tap');
+
+
+		// listenTo() 让一个对象监听另一个对象上的事件
+		var a = _.extend({}, Backbone.Events);
+		var b = _.extend({}, Backbone.Events);
+		a.listenTo(b, 'anything', function (event) {
+			console.log('anything happened');
+		});
+
+		b.trigger('anything');
+
+		a.stopListening();
+
+		b.trigger('anything'); // 没有输出
+	})(jQuery);
+	</script>
+</body>
+</html>
