@@ -22,6 +22,10 @@ fs.stat(__dirname+'/test', function (err, stats) {
 与``copy``命令类似，我们的程序需要能接受源文件路径与目标文件路径两个参数。
 ```
 function copy(src, dst) {
+    fs.writeFileSync(dst, fs.readFileSync(src));
+}
+
+function copy(src, dst) {
     fs.createReadStream(src).pipe(fs.createWriteStream(dst));
 }
 
