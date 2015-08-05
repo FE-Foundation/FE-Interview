@@ -3,6 +3,11 @@
 ```javascript
 var fs = require('fs');
 ```
+####path内置模块
+* ``path.normalize``将传入的路径转换为标准路径
+* ``path.join``将传入的多个路径拼接为标准路径
+* ``path.extname('foo/bar.js'); // => ".js"``
+
 ####fs.stat
 查询文件的信息：
 ```javascript
