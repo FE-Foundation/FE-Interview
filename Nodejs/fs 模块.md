@@ -121,15 +121,18 @@ travel(__dirname+'/home/user', function (pathname) {
 广度优先搜索：
 ```
 function travel(dir, callback) {
-	var dirList = fs.readdirSync(dir);
+	var dirList = fs.readdirSync(dir),
+	    queue = [];
 	dirList.forEach(function (file) {
 		var pathname = path.join(dir, file);
 		if (fs.statSync(pathname).isFile()) {
 			callback(pathname);
-		} 
+		} else {
+			queue.push(file);
+		}
 	});
 
-	dirList.forEach(function (file) {
+	queue.forEach(function (file) {
 		var pathname = path.join(dir, file);
 		if (fs.statSync(pathname).isDirectory()) {
 			travel(pathname, callback);
