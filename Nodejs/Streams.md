@@ -8,13 +8,7 @@
 ```javascript
 var readStream = ...
 readStream.on('data', function (chunk) {
-    //chunk is a Buffer
-})
-```
-```javascript
-var readStream = ...
-readStream.on('data', function (chunk) {
-    //chunk is a UTF-8 encoded string
+    //chunk is a Buffer/UTF-8 encoded string
 })
 ```
 ``end``结束事件：
@@ -105,7 +99,7 @@ require('http').createServer(function (req, res) {
 		res.write(chunk);
 	});
 
-	res.on('end', function () {
+	rs.on('end', function () {
 		res.end();
 	});
 });
@@ -119,11 +113,11 @@ require('http').createServer(function (req, res) {
 	rs.on('data', function (data) {
 		// 返回false,则暂时不能写入内核空间
 		if (!res.write(data)) {
-			res.pause();
+			rs.pause();
 		}
 	});
-	rs.on('drain', function () {
-		res.resume();
+	res.on('drain', function () {
+		rs.resume();
 	});
 	rs.on('end', function () {
 		res.end();
