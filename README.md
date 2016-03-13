@@ -1,2 +1,1 @@
-# note
-good good study, day day up 
+the 18 Weapons of KungFu in Front-End
